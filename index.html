@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acessibilidade para Todos | Informação, Estatísticas e Direitos</title>
+    <!-- Tailwind CSS para Estilização Moderna -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Modo Noturno Customizado */
+        .dark-mode {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+        .dark-mode main section {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode strong {
+            color: #38bdf8 !important;
+        }
+        .dark-mode p, .dark-mode li, .dark-mode span {
+            color: #cbd5e1 !important;
+        }
+        .dark-mode .bg-slate-50, .dark-mode .bg-blue-50\/60, .dark-mode .bg-emerald-50\/50 {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+        }
+
+        /* Estilos customizados de Alto Contraste */
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #ffff00 !important;
+        }
+        .high-contrast * {
+            background-color: #000000 !important;
+            color: #ffff00 !important;
+            border-color: #ffff00 !important;
+        }
+        .high-contrast a, .high-contrast button {
+            text-decoration: underline !important;
+        }
+
+        /* Foco visível bem destacado para navegação por teclado */
+        *:focus-visible {
+            outline: 3px solid #f59e0b !important;
+            outline-offset: 3px !important;
+        }
+    </style>
+</head>
+<body id="body-root" class="bg-slate-50 text-slate-800 transition-all duration-200 min-h-screen flex flex-col font-sans">
+
+    <!-- Barra de Atalhos de Acessibilidade (Top Bar) -->
+    <header class="bg-blue-900 text-white py-2 px-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2 text-sm">
+            <div class="flex items-center gap-2">
+                <i data-lucide="accessibility" class="w-5 h-5 text-amber-400"></i>
+                <span class="font-bold tracking-wide">Portal Acessibilidade em Foco</span>
+            </div>
+            
+            <!-- Ferramentas de Ajuste -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="toggleTextToSpeech()" id="btn-tts" class="flex items-center gap-1 bg-blue-800 hover:bg-blue-700 px-3 py-1 rounded-full text-xs font-semibold border border-blue-600 transition" aria-label="Ouvir texto da página">
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                    <span id="tts-label">Ouvir Página</span>
+                </button>
+                <button onclick="changeFontSize(1)" class="bg-blue-800 hover:bg-blue-700 px-2 py-1 rounded text-xs font-bold border border-blue-600" aria-label="Aumentar Fonte">A+</button>
+                <button onclick="changeFontSize(-1)" class="bg-blue-800 hover:bg-blue-700 px-2 py-1 rounded text-xs font-bold border border-blue-600" aria-label="Diminuir Fonte">A-</button>
+                
+                <!-- Botão Modo Noturno -->
+                <button onclick="toggleDarkMode()" id="btn-dark-mode" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-100 px-3 py-1 rounded-full text-xs font-bold transition border border-slate-600" aria-label="Alternar Modo Noturno">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                    <span id="dark-mode-label">Modo Noturno</span>
+                </button>
+
+                <!-- Botão Alto Contraste -->
+                <button onclick="toggleContrast()" class="flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1 rounded-full text-xs font-bold transition" aria-label="Alternar Alto Contraste">
+                    <i data-lucide="sun-moon" class="w-4 h-4"></i>
+                    Alto Contraste
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu de Navegação -->
+    <nav class="bg-blue-800 text-white shadow" aria-label="Navegação Principal">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-center sm:justify-start gap-4 font-medium">
+            <a href="#dia-a-dia" class="hover:text-amber-300 transition flex items-center gap-1">
+                <i data-lucide="users" class="w-4 h-4"></i> No Dia a Dia
+            </a>
+            <a href="#estatisticas" class="hover:text-amber-300 transition flex items-center gap-1">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Estatísticas
+            </a>
+            <a href="#locais" class="hover:text-amber-300 transition flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-4 h-4"></i> Locais 100% Acessíveis
+            </a>
+            <a href="#direitos" class="hover:text-amber-300 transition flex items-center gap-1">
+                <i data-lucide="shield-check" class="w-4 h-4"></i> Seus Direitos
+            </a>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main id="main-content" class="max-w-6xl mx-auto px-4 py-8 flex-grow space-y-12">
+
+        <!-- Banner de Boas-Vindas -->
+        <section class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-8 rounded-2xl shadow-lg text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-4 max-w-2xl">
+                <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Acessibilidade: Um Direito de Todos, Uma Necessidade Diária</h1>
+                <p class="text-blue-100 text-lg">
+                    Construir uma sociedade inclusiva exige informação, conscientização e respeito às leis. Saiba como a acessibilidade transforma vidas no cotidiano.
+                </p>
+            </div>
+            <div class="bg-white/10 p-4 rounded-xl border border-white/20 text-center min-w-[200px]">
+                <i data-lucide="heart-handshake" class="w-16 h-16 mx-auto mb-2 text-amber-300"></i>
+                <p class="font-semibold text-sm">Inclusão para Todos</p>
+            </div>
+        </section>
+
+        <!-- Seção 1: O que é Acessibilidade no Dia a Dia -->
+        <section id="dia-a-dia" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+                <div class="p-3 bg-blue-100 text-blue-800 rounded-lg">
+                    <i data-lucide="eye" class="w-7 h-7"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-blue-900">1. Acessibilidade no Dia a Dia</h2>
+            </div>
+            <p class="text-slate-700 leading-relaxed text-lg">
+                Muitas pessoas pensam que acessibilidade se resume a rampas e elevadores. Na verdade, a acessibilidade garante que <strong>todas as pessoas</strong> — cadeirantes, pessoas cegas, surdas, idosos, gestantes ou pessoas com mobilidade reduzida temporária — possam viver com autonomia e dignidade.
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-6 pt-4">
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 transition">
+                    <h3 class="font-bold text-lg text-blue-800 mb-2 flex items-center gap-2">
+                        <i data-lucide="building-2" class="w-5 h-5 text-amber-600"></i> Arquitetônica e Urbana
+                    </h3>
+                    <p class="text-slate-600">Calçadas regulares com piso tátil, rampas com inclinação correta, sinalização sonora em semáforos e transporte público adaptado.</p>
+                </div>
+
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 transition">
+                    <h3 class="font-bold text-lg text-blue-800 mb-2 flex items-center gap-2">
+                        <i data-lucide="monitor" class="w-5 h-5 text-amber-600"></i> Digital e Web
+                    </h3>
+                    <p class="text-slate-600">Sites preparados para leitores de tela, bom contraste de cores, suporte à linguagem Libras e navegação simples por teclado.</p>
+                </div>
+
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 transition">
+                    <h3 class="font-bold text-lg text-blue-800 mb-2 flex items-center gap-2">
+                        <i data-lucide="message-square" class="w-5 h-5 text-amber-600"></i> Comunicacional
+                    </h3>
+                    <p class="text-slate-600">Disponibilidade de intérpretes de Libras, textos em Braille, audiodescrição em eventos e linguagem clara e acessível.</p>
+                </div>
+
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 transition">
+                    <h3 class="font-bold text-lg text-blue-800 mb-2 flex items-center gap-2">
+                        <i data-lucide="smile" class="w-5 h-5 text-amber-600"></i> Atitudinal
+                    </h3>
+                    <p class="text-slate-600">Quebra de preconceitos, atitudes empáticas e eliminação de barreiras comportamentais na sociedade.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Como as Estatísticas Podem Melhorar a Acessibilidade -->
+        <section id="estatisticas" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+                <div class="p-3 bg-indigo-100 text-indigo-800 rounded-lg">
+                    <i data-lucide="bar-chart" class="w-7 h-7"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-blue-900">2. O Papel Vital das Estatísticas</h2>
+            </div>
+            <p class="text-slate-700 leading-relaxed text-lg">
+                Sem dados estatísticos precisos, a acessibilidade torna-se invisível para os planejadores públicos e privados. O levantamento de dados estatísticos melhora a acessibilidade das seguintes formas:
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-6 bg-blue-50/60 rounded-xl border border-blue-100 space-y-3">
+                    <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
+                    <h3 class="font-bold text-blue-900 text-lg">Mapeamento de Gargalos</h3>
+                    <p class="text-slate-600 text-sm">Identifica regiões e serviços públicos com maior índice de falta de adaptação para priorizar investimentos.</p>
+                </div>
+
+                <div class="p-6 bg-blue-50/60 rounded-xl border border-blue-100 space-y-3">
+                    <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
+                    <h3 class="font-bold text-blue-900 text-lg">Inclusão Trabalhista</h3>
+                    <p class="text-slate-600 text-sm">Mede a inserção no mercado de trabalho e fiscaliza o cumprimento de cotas em empresas privadas e concursos.</p>
+                </div>
+
+                <div class="p-6 bg-blue-50/60 rounded-xl border border-blue-100 space-y-3">
+                    <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
+                    <h3 class="font-bold text-blue-900 text-lg">Políticas Públicas Eficientes</h3>
+                    <p class="text-slate-600 text-sm">Garante que o orçamento da cidade seja aplicado em transporte acessível, saúde adaptada e educação inclusiva.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 3: Lugares e Ambientes com 100% de Acessibilidade -->
+        <section id="locais" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+                <div class="p-3 bg-amber-100 text-amber-800 rounded-lg">
+                    <i data-lucide="map-pin-check" class="w-7 h-7"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-blue-900">3. Lugares Exemplares com 100% de Acessibilidade</h2>
+            </div>
+            <p class="text-slate-700 leading-relaxed text-lg">
+                Para um local ser considerado 100% acessível, ele deve integrar soluções arquitetônicas, comunicação adaptada e atendimento treinado para atender todas as pessoas sem qualquer impedimento. Confira exemplos de estruturas totalmente adaptadas:
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6 pt-2">
+                <!-- Card 1 -->
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-2 text-amber-600 font-bold text-lg">
+                        <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                         Shopping Cidade dos Lagos
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Projetado do zero para ser livre de barreiras: conta com piso 100% plano, rampas suaves, elevadores adaptados com sinalização em braille e voz, sanitários privativos familiares/acessíveis e vagas reservadas estrategicamente na entrada.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-2 text-amber-600 font-bold text-lg">
+                        <i data-lucide="trees" class="w-6 h-6"></i>
+                         Parques Urbanos Adaptados (ex: Lagoa das Lágrimas / Parque do Lago)
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Locais abertos totalmente nivelados, com calçamento regular para livre circulação de cadeiras de rodas, rampas de acesso, meio-fio rebaixado nas travessias e academias ao ar livre com aparelhos adaptados.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-2 text-amber-600 font-bold text-lg">
+                        <i data-lucide="landmark" class="w-6 h-6"></i>
+                         Centros Culturais e Espaços Religiosos Acessíveis
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Prédios e catedrais que passaram por reformas estruturais completas, garantindo rampas de acesso amplo sem degraus, piso tátil para pessoas cegas, assentos reservados e sistemas de amplificação sonora para deficientes auditivos.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-2 text-amber-600 font-bold text-lg">
+                        <i data-lucide="film" class="w-6 h-6"></i>
+                         Cinemas e Teatros Inclusivos
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Salas de exibição equipadas com espaços dedicados e integrados para cadeirantes, fones de ouvido para audiodescrição em tempo real para pessoas cegas e sessões com legendagem descritiva e Libras.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 4: Direitos e Legislação -->
+        <section id="direitos" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+                <div class="p-3 bg-emerald-100 text-emerald-800 rounded-lg">
+                    <i data-lucide="shield" class="w-7 h-7"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-blue-900">4. Garantia de Direitos da População</h2>
+            </div>
+            <p class="text-slate-700 leading-relaxed text-lg">
+                No Brasil, a <strong>Lei Brasileira de Inclusão (LBI nº 13.146/2015)</strong> garante os direitos fundamentais das pessoas com deficiência. É fundamental que todos conheçam esses direitos para exigi-los e respeitá-los:
+            </p>
+
+            <div class="space-y-4">
+                <div class="p-5 border-l-4 border-emerald-600 bg-emerald-50/50 rounded-r-xl">
+                    <h3 class="font-bold text-emerald-900 text-lg flex items-center gap-2">
+                        <i data-lucide="award" class="w-5 h-5"></i> Atendimento Prioritário
+                    </h3>
+                    <p class="text-slate-700 mt-1">Garantido em repartições públicas, bancos, estabelecimentos comerciais, transporte coletivo e serviços de saúde.</p>
+                </div>
+
+                <div class="p-5 border-l-4 border-emerald-600 bg-emerald-50/50 rounded-r-xl">
+                    <h3 class="font-bold text-emerald-900 text-lg flex items-center gap-2">
+                        <i data-lucide="book-open" class="w-5 h-5"></i> Educação Inclusiva e Sem Taxas Extras
+                    </h3>
+                    <p class="text-slate-700 mt-1">Escolas privadas e públicas não podem recusar matrículas de estudantes com deficiência nem cobrar valores adicionais nas mensalidades.</p>
+                </div>
+
+                <div class="p-5 border-l-4 border-emerald-600 bg-emerald-50/50 rounded-r-xl">
+                    <h3 class="font-bold text-emerald-900 text-lg flex items-center gap-2">
+                        <i data-lucide="briefcase" class="w-5 h-5"></i> Lei de Cotas no Trabalho
+                    </h3>
+                    <p class="text-slate-700 mt-1">Empresas com 100 ou mais funcionários devem preencher obrigatoriamente de 2% a 5% dos seus cargos com beneficiários reabilitados ou pessoas com deficiência.</p>
+                </div>
+
+                <div class="p-5 border-l-4 border-emerald-600 bg-emerald-50/50 rounded-r-xl">
+                    <h3 class="font-bold text-emerald-900 text-lg flex items-center gap-2">
+                        <i data-lucide="globe" class="w-5 h-5"></i> Acessibilidade na Internet
+                    </h3>
+                    <p class="text-slate-700 mt-1">É obrigatória a acessibilidade em portais web mantidos por órgãos públicos e empresas privadas operando no Brasil.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé Acessível -->
+    <footer class="bg-blue-900 text-white py-8 border-t border-blue-800">
+        <div class="max-w-6xl mx-auto px-4 text-center space-y-4">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold">
+                <i data-lucide="heart" class="w-5 h-5 text-red-400"></i> Portal de Acessibilidade e Inclusão
+            </div>
+            <p class="text-blue-200 text-sm max-w-xl mx-auto">
+                Promovendo informação, conscientização e igualdade para toda a população.
+            </p>
+            <p class="text-xs text-blue-300">
+                &copy; Portal de Conscientização sobre Acessibilidade. Conteúdo educativo e informativo.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts de Interatividade e Acessibilidade -->
+    <script>
+        // Inicializa ícones
+        lucide.createIcons();
+
+        // Controle do Tamanho de Fonte
+        let currentFontSize = 100;
+        function changeFontSize(direction) {
+            currentFontSize += direction * 10;
+            if (currentFontSize < 80) currentFontSize = 80;
+            if (currentFontSize > 150) currentFontSize = 150;
+            document.body.style.fontSize = currentFontSize + '%';
+        }
+
+        // Modo Noturno (Dark Mode)
+        function toggleDarkMode() {
+            const body = document.getElementById('body-root');
+            const label = document.getElementById('dark-mode-label');
+            
+            // Remove alto contraste se estiver ativo para evitar conflitos de estilo
+            body.classList.remove('high-contrast');
+
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                label.textContent = "Modo Claro";
+            } else {
+                label.textContent = "Modo Noturno";
+            }
+        }
+
+        // Modo Alto Contraste
+        function toggleContrast() {
+            const body = document.getElementById('body-root');
+            // Desativa modo noturno se ativo
+            body.classList.remove('dark-mode');
+            document.getElementById('dark-mode-label').textContent = "Modo Noturno";
+
+            body.classList.toggle('high-contrast');
+        }
+
+        // Recurso Text-to-Speech (Leitura de Voz)
+        let isSpeaking = false;
+        function toggleTextToSpeech() {
+            const btnLabel = document.getElementById('tts-label');
+            
+            if ('speechSynthesis' in window) {
+                if (isSpeaking) {
+                    window.speechSynthesis.cancel();
+                    isSpeaking = false;
+                    btnLabel.textContent = "Ouvir Página";
+                } else {
+                    const textToRead = document.getElementById('main-content').innerText;
+                    const utterance = new SpeechSynthesisUtterance(textToRead);
+                    utterance.lang = 'pt-BR';
+                    utterance.rate = 1.0;
+
+                    utterance.onend = () => {
+                        isSpeaking = false;
+                        btnLabel.textContent = "Ouvir Página";
+                    };
+
+                    window.speechSynthesis.speak(utterance);
+                    isSpeaking = true;
+                    btnLabel.textContent = "Parar Leitura";
+                }
+            } else {
+                alert("Seu navegador não suporta a síntese de voz.");
+            }
+        }
+    </script>
+</body>
+</html>
